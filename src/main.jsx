@@ -5,7 +5,7 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ClerkProvider } from "@clerk/clerk-react";
 import Home from "./pages/Home.jsx";
-import Profile from "./pages/Profile.jsx";
+import Profile from "./profile/Profile.jsx";
 import AddList from "./pages/AddList.jsx";
 
 const router = createBrowserRouter([

@@ -15,6 +15,7 @@ import { Carlisting } from "../../configs/schema.js";
 import IconField from "@/components/IconField";
 import UploadImage from "@/components/UploadImage";
 import { useUser } from "@clerk/clerk-react";
+import moment from 'moment'
 
 function AddList() {
   const [formData, setFormData] = useState({});
@@ -49,14 +50,13 @@ function AddList() {
           ...formData,
           features: featuresData,
           createdBy:user?.primaryEmailAddress?.emailAddress,
-          postedOn:
+          postedOn:moment().format('DD/MM/yyyy')
         })
         .returning({ id: Carlisting.id });
 
       if (result) {
         console.log("submitted");
-        setCarListingId(result[0].id); // Store the carListingId
-        setLoader(false);
+        setCarListingId(result[0].id);
       }
     } catch (e) {
       console.log("error", e);

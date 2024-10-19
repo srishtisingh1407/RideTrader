@@ -22,7 +22,7 @@ export const Carlisting = pgTable("carListing", {
   offerType: varchar("offerType"),
   listingDescription: varchar("listingDescription"), // Required field
   features: json("features"),
-  createdBy: varchar('createdBy').notNull(),
+  createdBy: varchar('createdBy').notNull().default('srishtisingh140704@gmail.com'),
   postedOn: varchar('postedOn')
 });
 
