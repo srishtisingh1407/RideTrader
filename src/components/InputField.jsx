@@ -1,7 +1,7 @@
 import React from "react";
 import { Input } from "./ui/input";
 
-function InputField({ item,handleInputChange }) {
+function InputField({ item,handleInputChange,carInfo }) {
   return (
     <div>
       <Input
@@ -9,6 +9,7 @@ function InputField({ item,handleInputChange }) {
         name={item?.name}
         required={item?.required}
         onChange={(e)=>handleInputChange(item.name,e.target.value)}
+        defaultValue={carInfo?.[item.name]}
       />
     </div>
   );

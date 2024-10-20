@@ -1,14 +1,16 @@
-import React from 'react'
-import { Textarea } from "@/components/ui/textarea"
+import React from 'react';
+import Textarea from "@/components/ui/textarea";
 
-
-function TextArea({item,  handleInputChange}) {
+function TextArea({ item, handleInputChange, carInfo }) {
   return (
-    <div >
-        <Textarea onValueChange={(e)=>handleInputChange(item.name,e.target.value)} />
-
+    <div>
+      <Textarea
+        item={item}
+        handleInputChange={handleInputChange}
+        carInfo={carInfo}
+      />
     </div>
-  )
+  );
 }
 
-export default TextArea
+export default TextArea;

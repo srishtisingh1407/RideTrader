@@ -7,16 +7,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-function DropDown({ item,handleInputChange}) {
+function DropDown({ item,handleInputChange,carInfo}) {
   return (
     <div>
-      <Select onValueChange={(value)=>handleInputChange(item.name,value)}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder={item.label} />
+      <Select onValueChange={(value)=>handleInputChange(item.name,value)} defaultValue={carInfo?.[item.name]} >
+        <SelectTrigger className="w-full" >
+          <SelectValue placeholder={carInfo?.[item.name]?carInfo?.[item.name]:item.label}  />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent >
           {item?.options?.map((option, index) => (
-            <SelectItem value={option}>{option}</SelectItem>
+            <SelectItem value={option} >{option}</SelectItem>
           ))}
         </SelectContent>
       </Select>

@@ -25,7 +25,9 @@ function MyListing() {
         .select()
         .from(Carlisting)
         .leftJoin(CarImages, eq(Carlisting.id, CarImages.carListingId))
-        .where(eq(Carlisting.createdBy, user?.primaryEmailAddress?.emailAddress))
+        .where(
+          eq(Carlisting.createdBy, user?.primaryEmailAddress?.emailAddress)
+        )
         .orderBy(desc(Carlisting.id));
 
       const resp = Service.FormatResult(result);
@@ -53,12 +55,15 @@ function MyListing() {
             <div key={index}>
               <CarItems car={item} />
               <div className="p-2 bg-gray-50 rounded-lg flex gap-2">
-              <Button className="w-full">Edit</Button>
-              <Button variant="destructive"> <Trash2Icon></Trash2Icon></Button>
+                <Link to={"/add-list?mode=edit&id=" + item?.id} className="w-full">
+                  <Button className="w-full">Edit</Button>{" "}
+                </Link>{" "}
+                <Button variant="destructive">
+                  {" "}
+                  <Trash2Icon></Trash2Icon>
+                </Button>
+              </div>
             </div>
-            </div>
-          
-
           ))
         ) : (
           <p>No listings found.</p> // Display a message if there are no listings

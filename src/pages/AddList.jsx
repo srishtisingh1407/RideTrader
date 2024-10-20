@@ -1,30 +1,56 @@
 "use client";
 
 import Header from "@/components/Header";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import carDetails from "../Data/carDetails.json";
 import InputField from "@/components/InputField";
 import DropDown from "@/components/DropDown";
-import { Textarea } from "@/components/ui/textarea";
+
 import { Separator } from "@radix-ui/react-select";
 import features from "../Data/features";
 import Checkbox from "@/components/Checkbox";
 import { Button } from "@/components/ui/button";
 import { db } from "../../configs/index";
-import { Carlisting } from "../../configs/schema.js";
+import { CarImages, Carlisting } from "../../configs/schema.js";
 import IconField from "@/components/IconField";
 import UploadImage from "@/components/UploadImage";
 import { useUser } from "@clerk/clerk-react";
-import moment from 'moment'
+import moment from "moment";
+import { useSearchParams } from "react-router-dom";
+import { eq } from "drizzle-orm";
+import Service from "@/Data/Service";
+import TextArea from "@/components/TextArea";
 
 function AddList() {
   const [formData, setFormData] = useState({});
   const [featuresData, setFeaturesData] = useState({});
   const [carListingId, setCarListingId] = useState(null);
+  const [carInfo, setCarInfo] = useState();
+  const [searchParams] = useSearchParams();
   const [loader, setLoader] = useState(false);
-  const {user}=useUser();
+  const { user } = useUser();
 
-  // Use to capture user input field
+  const mode = searchParams.get("mode");
+  const recordId = searchParams.get("id");
+
+  useEffect(() => {
+    if (mode == "edit") {
+      {
+        GetListingDetail();
+      }
+    }
+  }, []);
+
+  const GetListingDetail = async () => {
+    const result = await db
+      .select()
+      .from(Carlisting)
+      .innerJoin(CarImages, eq(Carlisting.id, CarImages.carListingId))
+      .where(eq(Carlisting.id, recordId));
+    const resp = Service.FormatResult(result);
+    setCarInfo(resp[0]);
+  };
+
   const handleInputChange = (name, value) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -49,8 +75,8 @@ function AddList() {
         .values({
           ...formData,
           features: featuresData,
-          createdBy:user?.primaryEmailAddress?.emailAddress,
-          postedOn:moment().format('DD/MM/yyyy')
+          createdBy: user?.primaryEmailAddress?.emailAddress,
+          postedOn: moment().format("DD/MM/yyyy"),
         })
         .returning({ id: Carlisting.id });
 
@@ -90,16 +116,21 @@ function AddList() {
                     <InputField
                       item={item}
                       handleInputChange={handleInputChange}
+                      carInfo={carInfo}
                     />
                   ) : item.fieldType === "dropdown" ? (
                     <DropDown
                       item={item}
                       handleInputChange={handleInputChange}
+                      carInfo={carInfo}
+
                     />
                   ) : item.fieldType === "textarea" ? (
-                    <Textarea
+                    <TextArea
                       item={item}
                       handleInputChange={handleInputChange}
+                      carInfo={carInfo}
+
                     />
                   ) : null}
                 </div>
@@ -113,9 +144,12 @@ function AddList() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {features.features.map((item, index) => (
                 <div key={index} className="flex gap-2 items-center">
-                  <Checkbox
+                  <Checkbox 
                     onCheckedChange={(value) =>
                       handleFeatureChange(item.name, value)
+                      
+                      
+                    
                     }
                   />
                   <h2>{item.label}</h2>
@@ -130,10 +164,13 @@ function AddList() {
             setLoader={(v) => setLoader(v)}
           />
           <div className="mt-10 flex justify-end">
-            <Button type="submit"
-            disabled ={loader}
-            onSubmit={(e)=>onSubmit(e)}
-            >Submit</Button>
+            <Button
+              type="submit"
+              disabled={loader}
+              onSubmit={(e) => onSubmit(e)}
+            >
+              Submit
+            </Button>
           </div>
         </form>
       </div>
