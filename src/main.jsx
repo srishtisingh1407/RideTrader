@@ -7,6 +7,8 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import Home from "./pages/Home.jsx";
 import Profile from "./profile/Profile.jsx";
 import AddList from "./pages/AddList.jsx";
+import SearchByCategorgy from "./search/[category]/index.jsx";
+import SearchByOptions from "./search/index.jsx";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,14 @@ const router = createBrowserRouter([
   {
     path: "/add-list",
     element: <AddList/>,
+  },
+  {
+    path: "/search/:category",
+    element: <SearchByCategorgy/>,
+  },
+  {
+    path: "/search/",
+    element: <SearchByOptions/>,
   },
 ]);
 

@@ -1,5 +1,6 @@
 import Data from "@/Data/Data";
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Category() {
   return (
@@ -9,6 +10,7 @@ function Category() {
       </h1>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-9 gap-6 px-20">
         {Data.Category.map((category, index) => (
+          <Link to={'/search/'+category.name}>
           <div
             key={index}
             className="flex flex-col border-2 border-blue-200 rounded-md items-center hover:shadow-blue-500 hover:shadow-2xl cursor-pointer"
@@ -21,6 +23,7 @@ function Category() {
             />
             <h2 className="mt-2 text-center font-semibold">{category.name}</h2>
           </div>
+          </Link>
         ))}
       </div>
     </div>
